@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func strongPasswordChecker(s string) int {
+func StrongPasswordChecker(s string) int {
 	var numAdds int
 
 	var numDeletes int

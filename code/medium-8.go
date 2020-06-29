@@ -8,7 +8,7 @@ import (
 // StringRegex -
 var StringRegex = regexp.MustCompile(`^(?i)[?P<sign>+-]?(?P<number>\d*)\D*$`)
 
-func myAtoi(str string) int {
+func MyAtoi(str string) int {
 	trimmedString := strings.TrimSpace(str)
 	if trimmedString == "" || !isValid(trimmedString) {
 		return 0
