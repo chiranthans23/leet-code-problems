@@ -10,3 +10,11 @@ func AssertEquals(t *testing.T, actual, expected interface{}) {
 	}
 
 }
+
+// Abs -
+func Abs(i int) int {
+	if i < 0 {
+		return (-1) * i
+	}
+	return i
+}
