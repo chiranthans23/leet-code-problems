@@ -35,7 +35,8 @@ func handleOverFlow(quo int, sign int) int {
 		if sign == 1 {
 			return math.MaxInt32
 		}
-		return math.MinInt32
+		// Since I am handling sign in the end
+		return (-1) * math.MinInt32
 
 	}
 	return quo
