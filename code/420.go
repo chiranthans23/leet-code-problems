@@ -1,107 +1,124 @@
 package code
 
-import (
-	"fmt"
-	"strconv"
-	"strings"
-)
+import "sort"
 
+// StrongPasswordChecker -
 func StrongPasswordChecker(s string) int {
-	var numAdds int
-
-	var numDeletes int
-	var numLength int
-	n := len(s)
-	if n == 0 {
-		return 6
+	hasDigit, hasLowerCase, hasUpperCase := 0, 0, 0
+	for i := 0; i < len(s); i++ {
+		if s[i] <= '9' && s[i] >= '0' {
+			hasDigit = 1
+		}
+		if s[i] <= 'z' && s[i] >= 'a' {
+			hasLowerCase = 1
+		}
+		if s[i] <= 'Z' && s[i] >= 'A' {
+			hasUpperCase = 1
+		}
 	}
 
-	if !checkForNumber(s) {
-		numAdds++
-	}
-	if !checkForLowerCaseLetter(s) {
-		numAdds++
-	}
-	if !checkForUpperCaseLetter(s) {
-		numAdds++
+	needChars := 3 - (hasDigit + hasLowerCase + hasUpperCase)
+	if len(s) <= 4 {
+		return 6 - len(s)
 	}
 
-	triples := checkForTripleCharacters(s)
-	numAdds = Max(numAdds, triples)
-
-	if n < 6 {
-		numLength = 6 - n
-		numAdds = Max(numAdds, numLength)
-	} else if n > 20 {
-		numDeletes = n - 20
-		numAdds = (numDeletes + numAdds)
+	if len(s) == 5 {
+		return max(6-len(s), needChars)
 	}
 
-	return numAdds
+	i := 0
+	countThreeRepeat := 0
+	for i < len(s) {
+		if i < len(s) && i+1 < len(s) && i+2 < len(s) &&
+			s[i] == s[i+1] && s[i] == s[i+2] {
+			countThreeRepeat++
+			i += 3
+		} else {
+			i++
+		}
+	}
+	for len(s) >= 6 && len(s) <= 20 {
+		return max(countThreeRepeat, needChars)
+	}
+
+	// now len(s) > 20
+	needDelete := len(s) - 20
+	result := 0
+	if needChars > 0 {
+		result += needChars
+		countThreeRepeat -= needChars
+	}
+
+	if countThreeRepeat <= 0 || needDelete > 3*countThreeRepeat {
+		result += needDelete
+		return result
+	}
+
+	return mostComplicated(s, needChars)
 }
 
-func checkForTripleCharacters(s string) int {
-	var triples int
-	tripsCounter := 1
-
-	curr := s[0]
-	for i := 1; i < len(s)-2; i++ {
-		if tripsCounter == 3 {
-			tripsCounter = 1
-			curr = s[i]
-			continue
+func mostComplicated(s string, needChars int) int {
+	needDelete := len(s) - 20
+	repeat := []int{}
+	idx := 0
+	for idx < len(s) {
+		j := idx
+		for j < len(s) && s[idx] == s[j] {
+			j++
 		}
-		if s[i] == curr {
-			tripsCounter++
-			if tripsCounter >= 3 {
-				triples++
+		count := j - idx
+		if count > 2 {
+			repeat = append(repeat, count)
+		}
+		idx = j
+	}
+
+	result := needChars
+	for i := 0; i < needChars; i++ {
+		sort.Ints(repeat)
+		replaced := false
+		for k := 2; k >= 0; k-- {
+			for j := 0; j < len(repeat); j++ {
+				if repeat[j] > 2 && repeat[j]%3 == k {
+					repeat[j] -= 3
+					replaced = true
+				}
+				if replaced {
+					break
+				}
+			}
+			if replaced {
+				break
 			}
 		}
-
 	}
-	fmt.Println(triples)
-	return triples
-}
-
-func checkForNumber(s string) bool {
-
-	for i := 0; i < 10; i++ {
-		if strings.Contains(s, strconv.Itoa(i)) {
-			return true
+	sort.Ints(repeat)
+	for needDelete > 0 {
+		br := true
+		for k := 0; k <= 2; k++ {
+			for j := 0; j < len(repeat); j++ {
+				if repeat[j] > 2 && repeat[j]%3 == k && needDelete >= k+1 {
+					repeat[j] -= (k + 1)
+					needDelete -= (k + 1)
+					result += (k + 1)
+					br = false
+				}
+			}
+		}
+		if br {
+			break
 		}
 	}
-	return false
 
-}
-func checkForUpperCaseLetter(s string) bool {
-	for i := 0; i < 26; i++ {
-		if strings.Contains(s, toCharUpper(i)) {
-			return true
-		}
+	result += needDelete
+	for j := 0; j < len(repeat); j++ {
+		result += repeat[j] / 3
 	}
-	return false
+
+	return result
 }
-func checkForLowerCaseLetter(s string) bool {
-	for i := 0; i < 26; i++ {
-		if strings.Contains(s, toCharLower(i)) {
-			return true
-		}
-	}
-	return false
-}
-func toCharUpper(i int) string {
-	return string(rune('A' + i))
-}
-func toCharLower(i int) string {
-	return string(rune('a' + i))
-}
-func Abs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
-}
-func Max(x, y int) int {
+
+func max(x, y int) int {
 	if x > y {
 		return x
 	}
