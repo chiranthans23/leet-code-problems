@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/leet-code-problems/util"
+	"github.com/chiranthans23/leet-code-problems/util"
 )
 
 func TestMyAtoi(t *testing.T) {

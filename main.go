@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/leet-code-problems/code"
+	"github.com/chiranthans23/leet-code-problems/code"
 )
 
 func main() {

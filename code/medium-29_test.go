@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/leet-code-problems/util"
+	"github.com/chiranthans23/leet-code-problems/util"
 )
 
 func TestDivide(t *testing.T) {
