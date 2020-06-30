@@ -1,6 +1,6 @@
 package code
 
-import "gitscm-sb.cisco.com/leet-code-problems/util"
+import "math"
 
 // Divide -
 func Divide(dividend int, divisor int) int {
@@ -12,12 +12,31 @@ func Divide(dividend int, divisor int) int {
 	var quo int
 
 	// I'll work on only positive values and add sign in the end
-	dividend = util.Abs(dividend)
-	divisor = util.Abs(divisor)
+	dividend = abs(dividend)
+	divisor = abs(divisor)
 
 	for ; dividend >= divisor; quo++ {
 		dividend -= divisor
 	}
-
+	quo = handleOverFlow(quo, sign)
 	return sign * quo
+}
+
+// Abs -
+func abs(i int) int {
+	if i < 0 {
+		return (-1) * i
+	}
+	return i
+}
+
+func handleOverFlow(quo int, sign int) int {
+	if quo > math.MaxInt32 {
+		if sign == 1 {
+			return math.MaxInt32
+		}
+		return math.MinInt32
+
+	}
+	return quo
 }
