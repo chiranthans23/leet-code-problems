@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"gitscm-sb.cisco.com/leet-code-problems/util"
+	"github.com/leet-code-problems/util"
 )
 
 func TestDivide(t *testing.T) {
