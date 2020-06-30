@@ -15,8 +15,15 @@ func Divide(dividend int, divisor int) int {
 	dividend = abs(dividend)
 	divisor = abs(divisor)
 
-	for ; dividend >= divisor; quo++ {
-		dividend -= divisor
+	for dividend >= divisor {
+		tmp := divisor
+		powerOfTwo := 1
+		for tmp*2 <= dividend {
+			tmp *= 2
+			powerOfTwo *= 2
+		}
+		quo += powerOfTwo
+		dividend -= tmp
 	}
 	quo = handleOverFlow(quo, sign)
 	return sign * quo
