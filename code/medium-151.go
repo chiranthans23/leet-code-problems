@@ -22,3 +22,28 @@ func ReverseWords(str string) string {
 
 	return str
 }
+
+// ReverseWords2 -
+func ReverseWords2(str string) string {
+	var result string
+	var word string
+
+	var multipleSpaces bool
+	for _, ele := range strings.TrimSpace(str) {
+
+		if string(ele) == " " && multipleSpaces {
+			continue
+		} else if string(ele) == " " {
+			multipleSpaces = true
+			continue
+		} else if string(ele) != " " && multipleSpaces {
+			multipleSpaces = false
+			result = word + " " + result
+			word = ""
+		}
+
+		word += string(ele)
+
+	}
+	return strings.TrimSpace(word + " " + result)
+}

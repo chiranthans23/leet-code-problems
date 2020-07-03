@@ -13,3 +13,11 @@ func TestReverseString(t *testing.T) {
 	util.AssertEquals(t, ReverseWords(" "), "")
 	util.AssertEquals(t, ReverseWords("        I"), "I")
 }
+
+func TestReverseString2(t *testing.T) {
+	util.AssertEquals(t, ReverseWords("Am I"), "I Am")
+	util.AssertEquals(t, ReverseWords(" Am I "), "I Am")
+	util.AssertEquals(t, ReverseWords(" Am       I "), "I Am")
+	util.AssertEquals(t, ReverseWords(" "), "")
+	util.AssertEquals(t, ReverseWords("        I"), "I")
+}
